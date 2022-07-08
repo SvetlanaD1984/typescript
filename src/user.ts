@@ -1,10 +1,26 @@
 import { renderBlock } from './lib.js'
 
-export function renderUserBlock (username: string, avatarUrl: string, favoriteItemsAmount: number) {
+const user = {
+  username: 'Wade Warren',
+  avatarUrl: 'Wade Warren'
+}
+console.log(user);
+localStorage.setItem('user', JSON.stringify(user));
+
+const favoritesAmount = {
+  favoriteItemsAmount: 3  
+}
+console.log(favoritesAmount);
+localStorage.setItem('favoritesAmount', JSON.stringify(favoritesAmount));
+
+
+export function renderUserBlock (username: string, avatarUrl: string, favoriteItemsAmount?: number) {
   const favoritesCaption = (favoriteItemsAmount > 1) ? favoriteItemsAmount : 'ничего нет'
   const hasFavoriteItems = (favoriteItemsAmount > 1) ? true : false
+  const userBlock = localStorage.getItem('user');
+ console.log(JSON.parse(userBlock));
 
-  renderBlock(
+ renderBlock(
     'user-block',
     `
     <div class="header-container">
@@ -19,3 +35,19 @@ export function renderUserBlock (username: string, avatarUrl: string, favoriteIt
     `
   )
 }
+
+ 
+
+function getUserData(user: unknown) {
+ const userData = localStorage.getItem('user');
+ console.log(JSON.parse(userData));
+}
+
+
+function getFavoritesAmount(favoritesAmount: unknown) {
+  const favoritesData = localStorage.getItem('favoritesAmount');
+  console.log(JSON.parse(favoritesData));
+ }
+ 
+
+
