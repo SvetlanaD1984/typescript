@@ -24,7 +24,36 @@ export function renderEmptyOrErrorSearchBlock (reasonMessage) {
   )
 }
 
-export function renderSearchResultsBlock () {
+export function renderSearchResultBlock (places) {
+  let itemsListPlaces = ''
+
+  if(Array.isArray(places) && places.length>0) {
+    places.forEach((place) => {
+      itemsListPlaces += ` <li class="result">
+       <div class="result-container">
+        <div class="result-img-container">
+          <div class="favorites"></div>
+          <img class="result-img" src="./img/result-2.png" alt="">
+        </div>	
+        <div class="result-info">
+          <div class="result-info--header">
+            <p>${place.name}</p>
+            <p class="price">13000&#8381;</p>
+          </div>
+          <div class="result-info--map"><i class="map-icon"></i> 1.1км от вас</div>
+          <div class="result-info--descr">${place.description}</div>
+          <div class="result-info--footer">
+            <div>
+              <button>Забронировать</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>`      
+    })
+    
+  }
+  console.log('itemsListPlaces', itemsListPlaces);
   renderBlock(
     'search-results-block',
     `
@@ -61,28 +90,10 @@ export function renderSearchResultsBlock () {
           </div>
         </div>
       </li>
-      <li class="result">
-        <div class="result-container">
-          <div class="result-img-container">
-            <div class="favorites"></div>
-            <img class="result-img" src="./img/result-2.png" alt="">
-          </div>	
-          <div class="result-info">
-            <div class="result-info--header">
-              <p>Akyan St.Petersburg</p>
-              <p class="price">13000&#8381;</p>
-            </div>
-            <div class="result-info--map"><i class="map-icon"></i> 1.1км от вас</div>
-            <div class="result-info--descr">Отель Akyan St-Petersburg с бесплатным Wi-Fi на всей территории расположен в историческом здании Санкт-Петербурга.</div>
-            <div class="result-info--footer">
-              <div>
-                <button>Забронировать</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
+     
     </ul>
     `
   )
+  const nodeListPlace = document.querySelector('.results-list--js');
+  nodeListPlace.insertAdjacentHTML('afterbegin', itemsListPlaces);
 }
