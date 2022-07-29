@@ -1,9 +1,9 @@
-export function renderBlock (elementId, html) {
+export function renderBlock (elementId: any, html: any) {
   const element = document.getElementById(elementId)
   element.innerHTML = html
 }
 
-export function renderToast (message, action) {
+export function renderToast (message: any, action: any) {
   let messageText = ''
   
   if (message != null) {
