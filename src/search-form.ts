@@ -1,24 +1,25 @@
 import { renderBlock } from "./lib.js";
+//import { today, defaultStart, defaultFinish, maxDayFinish } from './dates.js'
+//import { searchHandler } from './helpers/search-handler.js'
+import { baseUrl } from './API/index.js'
+import { renderSearchResultBlock} from './search-results.js'
 
-export function renderSearchFormBlock(dayStart, dayFinish) {
- 
- let today = new Date();
- console.log(today);
- 
- let maxDayFinish = new Date(today.getFullYear(), today.getMonth()+2, 0);
- console.log(maxDayFinish);
- 
- let defaultStart = new Date(today.getFullYear(), today.getMonth(), today.getDate()+1);
- console.log(defaultStart);
- 
- let defaultFinish = new Date(today.getFullYear(), today.getMonth(), today.getDate()+3);
- console.log(defaultFinish);
+let today = new Date();
+console.log(today);
 
- //document.getElementById('check-in-date').innerHTML = today;
- //document.getElementById('check-out-date').innerHTML = maxDayFinish;
+let maxDayFinish = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+console.log(maxDayFinish);
 
+let defaultStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+console.log(defaultStart);
+
+let defaultFinish = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3);
+console.log(defaultFinish);
+
+
+export function renderSearchFormBlock(dayStart?: Date, dayFinish?: Date) {
  
- renderBlock(
+  renderBlock(
   'search-form-block',
   `
   <form>
@@ -37,24 +38,70 @@ export function renderSearchFormBlock(dayStart, dayFinish) {
       <div class="row">
         <div>
           <label for="check-in-date">Дата заезда</label>
-          <input id="check-in-date" type="date" value="2022-07-01" min="2022-07-01" max="2022-08-31" name="checkin" />
+          <input id="check-in-date" type="date" value="${dayStart || defaultStart}" min="${today}" max="${maxDayFinish}" name="checkin" />
         </div>
         <div>
           <label for="check-out-date">Дата выезда</label>
-          <input id="check-out-date" type="date" value="2022-08-31" min="2022-07-03" max="2022-08-31" name="checkout" />
+          <input id="check-out-date" type="date" value="${dayFinish || defaultFinish}" min="${today}" max="${maxDayFinish}" name="checkin" />
         </div>
         <div>
           <label for="max-price">Макс. цена суток</label>
           <input id="max-price" type="text" value="" name="price" class="max-price" />
         </div>
         <div>
-          <div><button>Найти</button></div>
+          <div><button id="btn-search">Найти</button></div>
         </div>
       </div>
     </fieldset>
   </form>
   `
 )
+
+const btnSearch = document.getElementById('btn-search');
+btnSearch.addEventListener('click', (event: MouseEvent) => {
+  event.preventDefault();
+//searchHandler();
+fetchPlaces();
+})
+function fetchPlaces() {
+const coordinates = '59.9386.30.3141';
+const checkInDate = new Date(today).getTime() || new Date(defaultStart).getTime();
+const checkOutDate = new Date(maxDayFinish).getTime() || new Date(defaultFinish).getTime();
+
+  fetch(baseUrl + `/places?coordinates=${coordinates}&chekInDate=${checkInDate}&checkOutDate=${checkOutDate}&maxPrice=10000`)
+  .then((response) => {
+    return response.json()
+  })
+  .then((data) => {
+    console.log(data)
+    renderSearchResultBlock(data)
+  })
+}
+
 }
 
 
+
+interface SearchFormData {
+  city: string;
+  dayStart: any;
+  dayFinish: any;
+  priceOfDay: number
+ }
+
+ let formData: SearchFormData = {
+   
+  city: "Санкт-Петербург",
+  dayStart: 2022-7-22,
+  dayFinish: 2022-7-22,
+  priceOfDay: 4000
+}
+
+function search(searchForm: SearchFormData): void {
+  console.log("city: ", searchForm.city);
+  console.log("dayStart: ", searchForm.dayStart);
+  console.log("dayFinish: ", searchForm.dayFinish);
+  console.log("priceOfDay: ", searchForm.priceOfDay);
+  }
+
+  search(formData);
