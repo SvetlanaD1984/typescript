@@ -5,8 +5,9 @@ import { renderToast } from "./lib.js";
 
 window.addEventListener("DOMContentLoaded", () => {
   renderUserBlock("Wade Warren", "0", 3);
-  renderSearchFormBlock(1, 8);
+  renderSearchFormBlock(2022, 6, 29, 2022, 7, 29);
   renderSearchStubBlock();
+  renderSearchSortBlock ();
   renderToast(
     {
       text: "Это пример уведомления.",
@@ -20,5 +21,3 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   );
 });
-
-
